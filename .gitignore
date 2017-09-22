@@ -1,0 +1,13 @@
+*.key
+venv
+__pycache__
+Test
+scholarium.bib
+kindlegen
+*.csv
+*.zip
+tmp
+Scholien
+Rechnungen
+*.log
+*.md

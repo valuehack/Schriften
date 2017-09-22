@@ -1,0 +1,22 @@
+---
+www: scholarium.at
+email: info@scholarium.at
+publishers: Scholarium Wien
+copyright: scholarium
+author: Rahim Taghizadegan
+year: 2017
+satz: Moritz Degelmann
+cover: Merlin Buczek
+ISBN:
+lang: de
+documentclass: memoir
+fontsize: 12pt
+toc: true
+toc-depth: 2
+biblio-style: chicago
+biblio-title: Literatur
+papersize: A4
+classoption: twoside,openany
+title: Scholien 2017 - 1. Halbjahr
+
+---

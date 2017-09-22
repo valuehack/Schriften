@@ -1,0 +1,19 @@
+﻿---
+www: scholarium.at
+email: info@scholarium.at
+publishers: Scholarium Wien
+copyright: scholarium
+Satz: Moritz Degelmann
+Cover: Merlin Buczek
+ISBN: 978-3-903199-00-2
+lang: de
+documentclass: memoir
+fontsize: 12pt
+fontfamily: garamond
+bibliography: Bibliothek
+toc: true
+toc-depth: 2
+biblio-style: chicago
+biblio-title: Literatur
+papersize: mlargecrownvo
+classoption: twoside,openany

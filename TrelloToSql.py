@@ -1,10 +1,14 @@
-# Liest Trello-Karten aus Liste "Texte lektoriert" des "Play-Boards" aus
-# und wandelt Sie mit Pandoc in html um. Inklusive Literaturverzeichnis.
-# Zusätzlich werden ein paar weitere Formatierungen vorgenommen.
-# Das Ergebnis wird dann in die Datenbank geschrieben.
-# Die Trello-Karten werden hinterher verschoben.
+#!/usr/bin/env python
+# coding: utf8
 
-import datetime
+'''
+Liest Trello-Karten aus Liste "Texte lektoriert" des "Play-Boards" aus
+und wandelt Sie mit Pandoc in html um. Inklusive Literaturverzeichnis.
+Zusätzlich werden ein paar weitere Formatierungen vorgenommen.
+Das Ergebnis wird dann in die Datenbank geschrieben.
+Die Trello-Karten werden hinterher verschoben.
+'''
+
 import mysql.connector
 import codecs
 import re
@@ -13,6 +17,8 @@ import os
 import subprocess
 from trello import TrelloClient
 from slugify import slugify
+import datetime
+
 
 base_dir = os.path.dirname(os.path.abspath(__file__))
 bib = os.path.join(base_dir,"scholarium.bib")

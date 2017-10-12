@@ -18,6 +18,10 @@ import subprocess
 from trello import TrelloClient
 from slugify import slugify
 import datetime
+import sys
+
+reload(sys)
+sys.setdefaultencoding('utf-8')
 
 
 base_dir = os.path.dirname(os.path.abspath(__file__))

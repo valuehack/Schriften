@@ -18,10 +18,11 @@ import subprocess
 from trello import TrelloClient
 from slugify import slugify
 import datetime
-import sys
+#import sys
 
-reload(sys)
-sys.setdefaultencoding('utf-8')
+#Possible Fix for encoding problems.
+#reload(sys)
+#sys.setdefaultencoding('utf-8')
 
 
 base_dir = os.path.dirname(os.path.abspath(__file__))
@@ -77,6 +78,8 @@ for list in play_board.open_lists():
                 if id[0]=='!':
                     priority=1
                     id=id[1:]
+                else:
+                    priority=0
                 p=re.compile(r", ")
                 id=p.sub("-",id)
             else:
@@ -95,8 +98,6 @@ for list in play_board.open_lists():
             #print(title)
             html=pypandoc.convert(md, 'html', format='md',  extra_args=extra_args, filters=filters)
 
-            print(html)
-
             #blockquotes mit class versehen
             p=re.compile("<blockquote>")
             html=p.sub("<blockquote class=\"blockquote\">",html)
@@ -106,7 +107,7 @@ for list in play_board.open_lists():
             html=p.sub("&ndash;",html)
 
             #Trennungszeichen
-            p=re.compile(r"<p>&lt;&lt;&lt;</p>\r\n")
+            p=re.compile(r"<p>&lt;&lt;&lt;</p>") #(\r\n|\r|\n)")
             split=re.split(p,html)
             public=split[0]
             privat=split[1] if len(split) > 1 else "" #print('Kein privater Teil vorhanden.')

@@ -27,6 +27,7 @@ sys.setdefaultencoding('utf-8')
 base_dir = os.path.dirname(os.path.abspath(__file__))
 bib = os.path.join(base_dir,"scholarium.bib")
 md_path = os.path.join(base_dir,"Markdown")
+html_path = os.path.join(base_dir,"HTML")
 
 #Trello Connection
 with open(os.path.join(base_dir, 'trello.key'), 'r') as f:
@@ -94,7 +95,7 @@ for list in play_board.open_lists():
             #print(title)
             html=pypandoc.convert(md, 'html', format='md',  extra_args=extra_args, filters=filters)
 
-            #print(html)
+            print(html)
 
             #blockquotes mit class versehen
             p=re.compile("<blockquote>")

@@ -20,21 +20,29 @@ class Connector:
                 # 'collation': lines[6].strip()
             }
 
+
     def query(self, query):
         try:
             cnx = mysql.connector.connect(**self.config)
         except mysql.connector.Error as err:
-            if err.errno == mysql.connector.errorcode.ER_ACCESS_DENIED_ERROR:
-                print("Something is wrong with your user name or password")
-            elif err.errno == mysql.connector.errorcode.ER_BAD_DB_ERROR:
-                print("Database does not exist")
-            else:
-                print(err)
+            print(err)
             return False
         else:
-            cursor = cnx.cursor()
+            cursor = cnx.cursor(dictionary=True)
             cursor.execute(query)
             result = cursor.fetchall()
             cursor.close()
             cnx.close()
             return result
+
+    def commit(self, query):
+        try:
+            cnx = mysql.connector.connect(**self.config)
+        except mysql.connector.Error as err:
+                print(err)
+        else:
+            cursor = cnx.cursor(buffered=True)
+            cursor.execute(query)
+            cnx.commit()
+            cursor.close()
+            cnx.close()

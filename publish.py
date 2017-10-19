@@ -1,5 +1,5 @@
+import ipdb
 from db_connector import Connector
-
 
 def updateSQL():
     '''
@@ -17,11 +17,12 @@ def updateSQL():
 
         if post:
             # Setze aktuelles Datum als Veröffentlichung.
-            c.query('UPDATE blog SET publ_date = CURDATE() WHERE n = "%s"' % post[0][0])
-            print('%s veröffentlicht.' % post[0][3])
+            c.commit('UPDATE blog SET publ_date = CURDATE() WHERE n = %d' % post[0]['n']) #post[0][0])
+            print('%s veröffentlicht.' % post[0]['title']) #post[0][2])
         else:
             print('Kein neuer Beitrag vorhanden.')
-
+    else:
+        print('Letzter Beitrag vor am %s.' % last[0]['publ_date'])
 
 def pubSM():
     '''

@@ -1,4 +1,3 @@
-import ipdb
 from db_connector import Connector
 
 def updateSQL():

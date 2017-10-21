@@ -60,7 +60,8 @@ target_list=played_board.get_list('5774e15c515d20dd2aa0b534')
 for list in play_board.open_lists():
     if list.name=="Texte lektoriert":
         print('%d lektorierte(n) Text(e) gefunden.' % len(list.list_cards()))
-        for card in list.list_cards():
+        # Karten werden von unten nach oben abgearbeitet.
+        for card in list.list_cards()[::-1]:
             title=card.name
             text=card.desc
             fobj_out = codecs.open(os.path.join(md_path, "%s.md" % title),"w","utf-8")
@@ -95,7 +96,6 @@ for list in play_board.open_lists():
             md=fobj_out.read()
             extra_args=[]
             filters=['pandoc-citeproc']
-            #print(title)
             html=pypandoc.convert(md, 'html', format='md',  extra_args=extra_args, filters=filters)
 
             #blockquotes mit class versehen
@@ -107,13 +107,14 @@ for list in play_board.open_lists():
             html=p.sub("&ndash;",html)
 
             #Trennungszeichen
-            p=re.compile(r"<p>&lt;&lt;&lt;</p>") #(\r\n|\r|\n)")
+            p=re.compile(r"<p>&lt;&lt;&lt;</p>")
             split=re.split(p,html)
             public=split[0]
+            # lstrip entfernt mögliche Absätze am Anfang.
             privat=split[1].lstrip() if len(split) > 1 else ""
             if not privat:
                 print('Keinen privaten Teil gefunden.')
-                print(html)
+                # print(html)
             #sql
             try:
                 cnx = mysql.connector.connect(**config)
@@ -137,4 +138,5 @@ for list in play_board.open_lists():
                 cnx.close()
                 print('%s erfolgreich in DB übertragen.' % title)
 
-        list.move_all_cards(target_list)
+                card.change_board(played_board.id, target_list.id)
+                card.set_pos('top')

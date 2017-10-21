@@ -35,14 +35,14 @@ class Connector:
             cnx.close()
             return result
 
-    def commit(self, query):
+    def commit(self, query, *args):
         try:
             cnx = mysql.connector.connect(**self.config)
         except mysql.connector.Error as err:
                 print(err)
         else:
             cursor = cnx.cursor(buffered=True)
-            cursor.execute(query)
+            cursor.execute(query, *args)
             cnx.commit()
             cursor.close()
             cnx.close()

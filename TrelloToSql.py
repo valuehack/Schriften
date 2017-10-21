@@ -18,6 +18,7 @@ import subprocess
 from trello import TrelloClient
 from slugify import slugify
 import datetime
+from db_connector import Connector
 #import sys
 
 #Possible Fix for encoding problems.
@@ -39,19 +40,6 @@ with open(os.path.join(base_dir, 'trello.key'), 'r') as f:
         token=lines[1].strip(),
 #        token_secret=lines[3].strip()
     )
-
-#Database connection
-with open(os.path.join(base_dir, 'database.key'), 'r') as f:
-    lines = f.readlines()
-    config = {
-        'user': lines[0].strip(),
-        'password': lines[1].strip(),
-        'host': lines[2].strip(),
-        'database': lines[3].strip(),
-        # 'raise_on_warnings': lines[4].strip(),
-        # 'use_unicode': lines[5].strip(),
-        # 'collation': lines[6].strip()
-    }
 
 play_board=client.get_board('55d5dfee98d40fcb68fc0e0b')
 played_board=client.get_board('55c4665a4afe2f058bd3cb0a')
@@ -104,27 +92,10 @@ for list in play_board.open_lists():
                 print('Keinen privaten Teil gefunden.')
                 # print(html)
             #sql
-            try:
-                cnx = mysql.connector.connect(**config)
-            except mysql.connector.Error as err:
-                if err.errno == mysql.connector.errorcode.ER_ACCESS_DENIED_ERROR:
-                    print("Something is wrong with your user name or password")
-                elif err.errno == mysql.connector.errorcode.ER_BAD_DB_ERROR:
-                    print("Database does not exist")
-                else:
-                    print(err)
-            else:
-                cursor = cnx.cursor()
-                public=cnx.converter.escape(public)
-                privat=cnx.converter.escape(privat)
-                query = """INSERT INTO blog (id, title, public_text, private_text, priority, edited)
-                        VALUES ("{}","{}","{}","{}",{},1);""".format(id,title,public,privat,priority)
+            c = Connector()
+            query = 'INSERT INTO blog (id, title, public_text, private_text, priority, edited) VALUES (%s,%s,%s,%s,%s,1)'
+            c.commit(query,(id,title,public,privat,priority))
+            print('%s erfolgreich in DB übertragen.' % title)
 
-                cursor.execute(query)
-                cnx.commit()
-                cursor.close()
-                cnx.close()
-                print('%s erfolgreich in DB übertragen.' % title)
-
-                card.change_board(played_board.id, target_list.id)
-                card.set_pos('top')
+            card.change_board(played_board.id, target_list.id)
+            card.set_pos('top')

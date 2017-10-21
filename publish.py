@@ -16,8 +16,8 @@ def updateSQL():
 
         if post:
             # Setze aktuelles Datum als Veröffentlichung.
-            c.commit('UPDATE blog SET publ_date = CURDATE() WHERE n = %d' % post[0]['n']) #post[0][0])
-            print('%s veröffentlicht.' % post[0]['title']) #post[0][2])
+            c.commit('UPDATE blog SET publ_date = CURDATE() WHERE n = %d' % post[0]['n']) #No Injection danger, post is save. Passing post as argument does not work.
+            print('%s veröffentlicht.' % post[0]['title'])
         else:
             print('Kein neuer Beitrag vorhanden.')
     else:

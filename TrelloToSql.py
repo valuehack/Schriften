@@ -59,7 +59,7 @@ target_list=played_board.get_list('5774e15c515d20dd2aa0b534')
 
 for list in play_board.open_lists():
     if list.name=="Texte lektoriert":
-        #print(list.id)
+        print('%d lektorierte(n) Text(e) gefunden.' % len(list.list_cards()))
         for card in list.list_cards():
             title=card.name
             text=card.desc
@@ -110,8 +110,10 @@ for list in play_board.open_lists():
             p=re.compile(r"<p>&lt;&lt;&lt;</p>") #(\r\n|\r|\n)")
             split=re.split(p,html)
             public=split[0]
-            privat=split[1] if len(split) > 1 else "" #print('Kein privater Teil vorhanden.')
-
+            privat=split[1].lstrip() if len(split) > 1 else ""
+            if not privat:
+                print('Keinen privaten Teil gefunden.')
+                print(html)
             #sql
             try:
                 cnx = mysql.connector.connect(**config)
@@ -130,9 +132,9 @@ for list in play_board.open_lists():
                         VALUES ("{}","{}","{}","{}",{},1);""".format(id,title,public,privat,priority)
 
                 cursor.execute(query)
-
+                cnx.commit()
                 cursor.close()
                 cnx.close()
-                print('Success!')
+                print('%s erfolgreich in DB übertragen.' % title)
 
         list.move_all_cards(target_list)

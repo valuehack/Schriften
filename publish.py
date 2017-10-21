@@ -29,4 +29,5 @@ def pubSM():
     '''
     pass
 
-updateSQL()
+if  __name__=='__main__':
+    updateSQL()

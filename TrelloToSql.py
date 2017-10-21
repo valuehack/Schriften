@@ -67,26 +67,14 @@ for list in play_board.open_lists():
             fobj_out = codecs.open(os.path.join(md_path, "%s.md" % title),"w","utf-8")
             #meta = codecs.open("%s" %meta,"r","utf-8")
             #fobj_out.write(meta.read())
+
             #ids
-            p=re.compile(r"§§.*")
-            id= p.findall(text)
-
-            if id:
-                id =id[0]
-                id=id[2:]
-                text= p.sub("",text, count=1)
-                #Priority
-                if id[0]=='!':
-                    priority=1
-                    id=id[1:]
-                else:
-                    priority=0
-                p=re.compile(r", ")
-                id=p.sub("-",id)
-            else:
-                priority=0
-                id = slugify(title)
-
+            p = re.compile(r"§§.*")
+            id = p.findall(text)
+            id = id[0][2:] if id else title
+            priority = 1 if id[0] == '!' else 0
+            id = slugify(id)
+            text = p.sub("",text, count=1)
 
             fobj_out.write("---\nbibliography: {}\n---\n\n{}\n\n## Literatur".format(bib, text))
             fobj_out.close

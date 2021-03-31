@@ -2,7 +2,7 @@ certifi==2017.7.27.1
 chardet==3.0.4
 feedparser==5.2.1
 idna==2.6
-lxml==4.0.0
+lxml==4.6.3
 mysql-connector==2.1.4
 oauthlib==2.0.4
 pathlib==1.0.1
